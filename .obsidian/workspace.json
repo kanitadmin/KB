@@ -11,10 +11,14 @@
             "id": "f013dfbb5b79e2ea",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "05_เอกสารอ้างอิง/คู่มือ/Database/PostgreSQL - คู่มือการสร้าง Database และ User.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "PostgreSQL - คู่มือการสร้าง Database และ User"
             }
           }
         ]
@@ -90,6 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "05_เอกสารอ้างอิง/คู่มือ/Database/PostgreSQL - คู่มือการสร้าง Database และ User.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -99,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks"
+              "title": "Backlinks for PostgreSQL - คู่มือการสร้าง Database และ User"
             }
           },
           {
@@ -108,11 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "05_เอกสารอ้างอิง/คู่มือ/Database/PostgreSQL - คู่มือการสร้าง Database และ User.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links"
+              "title": "Outgoing links from PostgreSQL - คู่มือการสร้าง Database และ User"
             }
           },
           {
@@ -150,12 +156,13 @@
             "state": {
               "type": "outline",
               "state": {
+                "file": "05_เอกสารอ้างอิง/คู่มือ/Database/PostgreSQL - คู่มือการสร้าง Database และ User.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline"
+              "title": "Outline of PostgreSQL - คู่มือการสร้าง Database และ User"
             }
           }
         ]
@@ -178,6 +185,7 @@
   },
   "active": "f013dfbb5b79e2ea",
   "lastOpenFiles": [
+    "PostgreSQL - คู่มือการสร้าง Database และ User.pdf",
     "05_เอกสารอ้างอิง/คู่มือ/DevOps/SonarScanner CLI - คู่มือการติดตั้งบน Windows 11.md",
     "05_เอกสารอ้างอิง/คู่มือ/DevOps/SonarLint - คู่มือการติดตั้งบน VS Code.md",
     "05_เอกสารอ้างอิง/คู่มือ/Database/PostgreSQL - คู่มือการสร้าง Database และ User.md",

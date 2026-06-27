@@ -1,5 +1,11 @@
 {
   "newFileLocation": "folder",
   "newFileFolderPath": "00_กล่องรับเข้า",
-  "attachmentFolderPath": "07_ไฟล์แนบ"
+  "attachmentFolderPath": "07_ไฟล์แนบ",
+  "pdfExportSettings": {
+    "pageSize": "A4",
+    "landscape": true,
+    "margin": "1",
+    "downscalePercent": 100
+  }
 }
