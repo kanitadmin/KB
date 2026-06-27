@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "9d9980346a610af3",
+        "id": "bfec25a666d4046b",
         "type": "tabs",
         "children": [
           {
-            "id": "1c46a6b871401454",
+            "id": "f013dfbb5b79e2ea",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "05_เอกสารอ้างอิง/คู่มือ/DevOps/SonarLint - คู่มือการติดตั้งบน VS Code.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "SonarLint - คู่มือการติดตั้งบน VS Code"
+              "title": "New tab"
             }
           }
         ]
@@ -94,7 +90,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "05_เอกสารอ้างอิง/คู่มือ/DevOps/SonarLint - คู่มือการติดตั้งบน VS Code.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +99,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for SonarLint - คู่มือการติดตั้งบน VS Code"
+              "title": "Backlinks"
             }
           },
           {
@@ -113,12 +108,11 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "05_เอกสารอ้างอิง/คู่มือ/DevOps/SonarLint - คู่มือการติดตั้งบน VS Code.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from SonarLint - คู่มือการติดตั้งบน VS Code"
+              "title": "Outgoing links"
             }
           },
           {
@@ -156,13 +150,12 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "05_เอกสารอ้างอิง/คู่มือ/DevOps/SonarLint - คู่มือการติดตั้งบน VS Code.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of SonarLint - คู่มือการติดตั้งบน VS Code"
+              "title": "Outline"
             }
           }
         ]
@@ -183,7 +176,7 @@
       "bases:Create new base": false
     }
   },
-  "active": "1c46a6b871401454",
+  "active": "f013dfbb5b79e2ea",
   "lastOpenFiles": [
     "05_เอกสารอ้างอิง/คู่มือ/DevOps/SonarScanner CLI - คู่มือการติดตั้งบน Windows 11.md",
     "05_เอกสารอ้างอิง/คู่มือ/DevOps/SonarLint - คู่มือการติดตั้งบน VS Code.md",
