@@ -4,21 +4,19 @@
     "type": "split",
     "children": [
       {
-        "id": "162ea302f86e4161",
+        "id": "5d4de1d71c710d96",
         "type": "tabs",
         "children": [
           {
-            "id": "465aec785112f50c",
+            "id": "8eb06c6115f05dac",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "image",
               "state": {
-                "file": "05_เอกสารอ้างอิง/คู่มือ/Infrastructure/Active Directory - แบบออกแบบ OU Group Service Account และ GPO สำหรับโรงพยาบาล.md",
-                "mode": "source",
-                "source": false
+                "file": "07_ไฟล์แนบ/smb-private-share/01_smb_architecture.png"
               },
-              "icon": "lucide-file",
-              "title": "Active Directory - แบบออกแบบ OU Group Service Account และ GPO สำหรับโรงพยาบาล"
+              "icon": "lucide-image",
+              "title": "01_smb_architecture"
             }
           }
         ]
@@ -78,7 +76,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 856.5
   },
   "right": {
     "id": "03c5b58a918fe4dd",
@@ -183,34 +181,38 @@
       "bases:Create new base": false
     }
   },
-  "active": "465aec785112f50c",
+  "active": "8eb06c6115f05dac",
   "lastOpenFiles": [
+    "07_ไฟล์แนบ/smb-private-share/02_permission_model.png",
+    "07_ไฟล์แนบ/smb-private-share/03_gpo_map_flow.png",
+    "07_ไฟล์แนบ/รูปภาพ/Active Directory OU GPO/ad-ou-gpo-step-05-create-gpo-testing.svg",
+    "07_ไฟล์แนบ/รูปภาพ/Active Directory OU GPO/ad-ou-gpo-step-03-create-groups.svg",
+    "07_ไฟล์แนบ/รูปภาพ/Active Directory OU GPO/ad-ou-gpo-step-01-export-current-state.svg",
+    "07_ไฟล์แนบ/smb-private-share/01_smb_architecture.png",
+    "05_เอกสารอ้างอิง/คู่มือ/Infrastructure/Windows Server - คู่มือการจัดทำ Personal Share Drive ด้วย SMB และ GPO.md",
+    "05_เอกสารอ้างอิง/คู่มือ/Infrastructure/Active Directory - แบบออกแบบ OU Group Service Account และ GPO สำหรับโรงพยาบาล.md",
+    "05_เอกสารอ้างอิง/คู่มือ/Security/Wazuh - คู่มือการ Upgrade แบบ Standalone.md",
+    "05_เอกสารอ้างอิง/คู่มือ/Infrastructure/Windows Server - คู่มือการจัดทำ Personal Share Drive ด้วย SMB และ GPO.docx",
+    "05_เอกสารอ้างอิง/คู่มือ/Storage/MinIO - คู่มือการ Upgrade แบบ Standalone Native.md",
+    "05_เอกสารอ้างอิง/SMB_Private_Share_Drive_GPO_Manual.md",
+    "05_เอกสารอ้างอิง/คู่มือ/Database/PostgreSQL - คู่มือการสร้าง Database และ User.md",
+    "05_เอกสารอ้างอิง/คู่มือ/Infrastructure/Ubuntu Server - แผนและขั้นตอนการอัปเดตระบบ.md",
+    "05_เอกสารอ้างอิง/คู่มือ/Infrastructure/Windows Server - แผนและขั้นตอนการอัปเดตระบบ.md",
     "07_ไฟล์แนบ/รูปภาพ/Active Directory OU GPO/ad-ou-gpo-step-09-record-exceptions.svg",
+    "07_ไฟล์แนบ/smb-private-share/rendered",
+    "05_เอกสารอ้างอิง/SMB_Private_Share_Drive_GPO_Manual.docx",
+    "07_ไฟล์แนบ/smb-private-share",
+    "build_smb_private_share_manual.py",
     "07_ไฟล์แนบ/รูปภาพ/Active Directory OU GPO/ad-ou-gpo-step-08-phased-deploy.svg",
     "07_ไฟล์แนบ/รูปภาพ/Active Directory OU GPO/ad-ou-gpo-step-07-validate.svg",
     "07_ไฟล์แนบ/รูปภาพ/Active Directory OU GPO/ad-ou-gpo-step-06-pilot.svg",
-    "07_ไฟล์แนบ/รูปภาพ/Active Directory OU GPO/ad-ou-gpo-step-05-create-gpo-testing.svg",
     "07_ไฟล์แนบ/รูปภาพ/Active Directory OU GPO/ad-ou-gpo-step-04-assign-owners.svg",
-    "07_ไฟล์แนบ/รูปภาพ/Active Directory OU GPO/ad-ou-gpo-step-03-create-groups.svg",
-    "07_ไฟล์แนบ/รูปภาพ/Active Directory OU GPO/ad-ou-gpo-step-02-create-ou.svg",
-    "07_ไฟล์แนบ/รูปภาพ/Active Directory OU GPO/ad-ou-gpo-step-01-export-current-state.svg",
     "07_ไฟล์แนบ/รูปภาพ/Active Directory OU GPO",
-    "05_เอกสารอ้างอิง/คู่มือ/Infrastructure/Ubuntu Server - แผนและขั้นตอนการอัปเดตระบบ.md",
-    "05_เอกสารอ้างอิง/คู่มือ/Infrastructure/Active Directory - แบบออกแบบ OU Group Service Account และ GPO สำหรับโรงพยาบาล.md",
-    "05_เอกสารอ้างอิง/คู่มือ/Infrastructure/Windows Server - แผนและขั้นตอนการอัปเดตระบบ.md",
-    "05_เอกสารอ้างอิง/คู่มือ/Storage/MinIO - คู่มือการ Upgrade แบบ Standalone Native.md",
     "05_เอกสารอ้างอิง/คู่มือ/Infrastructure",
-    "05_เอกสารอ้างอิง/คู่มือ/Security/Wazuh - คู่มือการ Upgrade แบบ Standalone.md",
     "05_เอกสารอ้างอิง/คู่มือ/Storage",
     "05_เอกสารอ้างอิง/คู่มือ/Security",
     "PostgreSQL - คู่มือการสร้าง Database และ User.pdf",
-    "05_เอกสารอ้างอิง/คู่มือ/Database/PostgreSQL - คู่มือการสร้าง Database และ User.md",
     "05_เอกสารอ้างอิง/คู่มือ/DevOps/SonarScanner CLI - คู่มือการติดตั้งบน Windows 11.md",
-    "05_เอกสารอ้างอิง/คู่มือ/DevOps/SonarLint - คู่มือการติดตั้งบน VS Code.md",
-    "05_เอกสารอ้างอิง/คู่มือ/DevOps",
-    "05_เอกสารอ้างอิง/คู่มือ/Database",
-    "05_เอกสารอ้างอิง/คู่มือ",
-    "99_คลังเก็บถาวร",
-    "07_ไฟล์แนบ/เอกสาร"
+    "05_เอกสารอ้างอิง/คู่มือ/DevOps/SonarLint - คู่มือการติดตั้งบน VS Code.md"
   ]
 }
