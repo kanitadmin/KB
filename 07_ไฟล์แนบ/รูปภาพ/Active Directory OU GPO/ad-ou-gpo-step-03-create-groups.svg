@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <rect width="1200" height="675" fill="#f7f9fb"/>
+  <rect x="55" y="45" width="1090" height="585" rx="18" fill="#ffffff" stroke="#c9d3df" stroke-width="2"/>
+  <text x="90" y="105" font-family="Segoe UI, Tahoma, sans-serif" font-size="34" font-weight="700" fill="#18324a">ขั้นตอนที่ 3: สร้างกลุ่มตาม Naming Convention</text>
+  <text x="90" y="150" font-family="Segoe UI, Tahoma, sans-serif" font-size="22" fill="#4f6478">แยกกลุ่มตาม Role, Department, Resource และ Admin เพื่อควบคุมสิทธิ์อย่างเป็นระบบ</text>
+  <rect x="120" y="230" width="220" height="130" rx="12" fill="#e8f2ff" stroke="#3478c6" stroke-width="2"/>
+  <text x="230" y="285" text-anchor="middle" font-family="Segoe UI, Tahoma, sans-serif" font-size="24" font-weight="700" fill="#18324a">Role Groups</text>
+  <text x="230" y="320" text-anchor="middle" font-family="Segoe UI, Tahoma, sans-serif" font-size="17" fill="#4f6478">GG_RL03_DOCTOR</text>
+  <rect x="370" y="230" width="220" height="130" rx="12" fill="#eef8ef" stroke="#3d8b52" stroke-width="2"/>
+  <text x="480" y="285" text-anchor="middle" font-family="Segoe UI, Tahoma, sans-serif" font-size="24" font-weight="700" fill="#18324a">Dept Groups</text>
+  <text x="480" y="320" text-anchor="middle" font-family="Segoe UI, Tahoma, sans-serif" font-size="17" fill="#4f6478">GG_DEPT_ER</text>
+  <rect x="620" y="230" width="220" height="130" rx="12" fill="#fff4df" stroke="#cf8a1e" stroke-width="2"/>
+  <text x="730" y="285" text-anchor="middle" font-family="Segoe UI, Tahoma, sans-serif" font-size="24" font-weight="700" fill="#18324a">Resource Groups</text>
+  <text x="730" y="320" text-anchor="middle" font-family="Segoe UI, Tahoma, sans-serif" font-size="17" fill="#4f6478">DL_APP_HIS_DOCTOR</text>
+  <rect x="870" y="230" width="220" height="130" rx="12" fill="#ffeceb" stroke="#c85c5c" stroke-width="2"/>
+  <text x="980" y="285" text-anchor="middle" font-family="Segoe UI, Tahoma, sans-serif" font-size="24" font-weight="700" fill="#18324a">Admin Groups</text>
+  <text x="980" y="320" text-anchor="middle" font-family="Segoe UI, Tahoma, sans-serif" font-size="17" fill="#4f6478">GG_AD_TIER0</text>
+  <path d="M230 380 C360 450 840 450 980 380" stroke="#607d96" stroke-width="5" fill="none"/>
+  <rect x="290" y="480" width="620" height="70" rx="10" fill="#f1f5f9" stroke="#d5dde6"/>
+  <text x="600" y="524" text-anchor="middle" font-family="Segoe UI, Tahoma, sans-serif" font-size="22" fill="#18324a">ผลลัพธ์: โครงสร้างกลุ่มพร้อมใช้กับ AGDLP และการ Audit</text>
+</svg>
