@@ -8,10 +8,13 @@ tags:
   - infrastructure
   - คู่มือ
 created: 2026-06-28
-updated: 2026-06-28
+updated: 2026-06-29
 ---
 
 # Ubuntu Server - แผนและขั้นตอนการอัปเดตระบบ
+
+> [!summary] ใช้เมื่อไร
+> ใช้คู่มือนี้เมื่อต้องวางแผนและดำเนินการอัปเดตแพ็กเกจบน Ubuntu Server โดยต้องการควบคุมความเสี่ยงเรื่อง downtime, rollback, service validation และหลักฐานหลังดำเนินการ
 
 ## วัตถุประสงค์
 
@@ -22,6 +25,9 @@ updated: 2026-06-28
 คู่มือนี้ครอบคลุมการอัปเดตแพ็กเกจบน Ubuntu Server ด้วย `apt` เช่น Security Update, Bug Fix, Kernel Update และแพ็กเกจที่ได้รับอนุมัติให้ติดตั้ง
 
 คู่มือนี้ไม่ครอบคลุมการอัปเกรดข้ามรุ่นระบบปฏิบัติการ เช่น Ubuntu 22.04 LTS เป็น Ubuntu 24.04 LTS ซึ่งควรจัดทำแผนแยกต่างหาก
+
+> [!warning] Production Server
+> หากเป็นระบบ production ต้องมี maintenance window, backup หรือ snapshot ที่ตรวจสอบแล้ว, ผู้ประสานงานระบบงาน และเกณฑ์ตัดสินใจ rollback ก่อนเริ่มดำเนินการ
 
 ## ข้อมูลระบบ
 
@@ -55,6 +61,16 @@ updated: 2026-06-28
 | 7 | Restart Server หากจำเป็น |  |  | Server กลับมาทำงานปกติ |
 | 8 | ตรวจสอบบริการหลังอัปเดต |  |  | Service และ Application ใช้งานได้ |
 | 9 | บันทึกผลและปิดงาน |  |  | มีหลักฐานประกอบครบถ้วน |
+
+## ความเสี่ยงและการควบคุม
+
+| ความเสี่ยง | ผลกระทบ | การควบคุม |
+| --- | --- | --- |
+| Kernel update ทำให้ต้อง reboot | ระบบหยุดให้บริการชั่วคราว | ทำใน maintenance window และแจ้งผู้เกี่ยวข้อง |
+| Dependency เปลี่ยนแล้ว application มีปัญหา | Application ทำงานผิดปกติ | ตรวจรายการ package ก่อนยืนยัน และมี owner application ร่วมทดสอบ |
+| พื้นที่ `/boot` หรือ `/var` ไม่พอ | Update ล้มเหลวกลางทาง | ตรวจ `df -h` และแก้พื้นที่ก่อนเริ่ม |
+| Repository หรือ mirror ไม่เสถียร | ติดตั้ง package ไม่ครบ | ตรวจ repository ก่อนดำเนินการ และหลีกเลี่ยงการสลับ repo ระหว่างงาน |
+| Rollback ไม่พร้อม | Downtime ยาวขึ้น | เตรียม snapshot/backup และเกณฑ์ rollback ล่วงหน้า |
 
 ## ข้อกำหนดก่อนดำเนินการ
 
@@ -389,6 +405,25 @@ ls -lh /var/log/unattended-upgrades/
 ```
 
 หากใช้ Production Server ควรกำหนดนโยบายเรื่องเวลาการอัปเดต การ Restart อัตโนมัติ และการแจ้งเตือนให้ชัดเจน
+
+## แนวทางแก้ปัญหาที่พบบ่อย
+
+| อาการ | สาเหตุที่พบบ่อย | แนวทางตรวจสอบ |
+| --- | --- | --- |
+| `apt update` ล้มเหลว | DNS, proxy, repository หรือ certificate มีปัญหา | ตรวจ network, `/etc/apt/sources.list`, `/etc/apt/sources.list.d/` และ proxy |
+| `/boot` เต็ม | มี kernel เก่าค้างอยู่หลายรุ่น | ตรวจ `dpkg -l 'linux-image*'` และลบเฉพาะรุ่นที่ไม่ใช้งานตามนโยบาย |
+| Package ถูก hold | มีการ lock version เพื่อรองรับ application | ตรวจ `apt-mark showhold` และยืนยันกับเจ้าของระบบก่อนปลด hold |
+| Service ไม่ขึ้นหลัง reboot | Configuration หรือ dependency เปลี่ยน | ตรวจ `systemctl status`, `journalctl -u <service-name>` และ log application |
+| SSH เข้าไม่ได้หลัง reboot | Network, firewall หรือ ssh service มีปัญหา | ใช้ console/ILO/VM console ตรวจ network และ `sshd` |
+
+## หลักฐานที่ควรบันทึก
+
+- ผล `hostnamectl`, `uname -r` ก่อนและหลังอัปเดต
+- ผล `apt list --upgradable` ก่อนดำเนินการ
+- Log จาก `/var/log/apt/history.log` และ `/var/log/apt/term.log`
+- ผล `systemctl --failed` หลังอัปเดต
+- Screenshot หรือผลตรวจ application จากเจ้าของระบบ
+- Ticket, change request หรือบันทึกอนุมัติ maintenance window
 
 ## แหล่งอ้างอิง
 

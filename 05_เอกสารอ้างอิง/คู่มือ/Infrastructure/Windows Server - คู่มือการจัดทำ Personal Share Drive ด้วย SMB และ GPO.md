@@ -8,11 +8,16 @@ tags:
   - it/windows-server
   - it/gpo
 status: final
+created: 2026-06-28
+updated: 2026-06-29
 ---
 
 # คู่มือการจัดทำ Personal Share Drive ด้วย SMB และ GPO
 
 สำหรับบุคลากรภายในองค์กร โดยจำกัดสิทธิ์ให้เข้าถึงเฉพาะพื้นที่ส่วนตัวของตนเอง
+
+> [!summary] ใช้เมื่อไร
+> ใช้คู่มือนี้เมื่อต้องจัดทำพื้นที่เก็บไฟล์ส่วนตัวของผู้ใช้บน Windows File Server โดย map drive อัตโนมัติผ่าน GPO และต้องการควบคุมสิทธิ์ให้ผู้ใช้เห็นเฉพาะข้อมูลของตนเอง
 
 ## 1. วัตถุประสงค์
 
@@ -25,6 +30,7 @@ status: final
 - Group Policy Management
 - เครื่องลูกข่าย Windows ที่เข้าร่วมโดเมน
 - บัญชีผู้ใช้ที่อยู่ใน OU หรือกลุ่มที่องค์กรกำหนด
+- ไม่ครอบคลุมการทำ DFS Namespace, file classification, DLP หรือ migration จาก file server เดิม
 
 ## 3. หลักการออกแบบ
 
@@ -48,6 +54,21 @@ status: final
 | AD | มีบัญชีผู้ใช้ใน OU ที่ต้องการ และชื่อ logon ตรงกับชื่อโฟลเดอร์ส่วนตัว |
 | Admin Group | แนะนำให้สร้างกลุ่ม Domain Local เช่น `FileShare-Admins` |
 | Change Control | สำรองค่าปัจจุบัน กำหนดช่วงเวลาดำเนินการ และแจ้งผู้เกี่ยวข้องก่อนใช้งานจริง |
+
+> [!warning] ข้อมูลผู้ใช้
+> Share ส่วนตัวอาจมีข้อมูลสำคัญหรือข้อมูลส่วนบุคคล ต้องกำหนด backup, retention, audit และสิทธิ์ผู้ดูแลระบบให้ชัดเจนก่อนเปิดใช้งานจริง
+
+## 4.1 ข้อมูลที่ต้องเตรียม
+
+| รายการ | ตัวอย่าง | หมายเหตุ |
+|---|---|---|
+| File Server | `FS01` | ควรมี DNS record ที่เสถียร |
+| Share Name | `Users$` | ใช้ `$` เพื่อซ่อนจาก browse ทั่วไป |
+| Root Path | `D:\Shares\Users` | แยก volume จาก OS หากทำได้ |
+| Drive Letter | `H:` | ตรวจไม่ชนกับ drive อื่นขององค์กร |
+| User Scope | OU หรือ security group | ใช้จำกัด GPO scope |
+| Admin Group | `CONTOSO\FileShare-Admins` | ทบทวนสมาชิกเป็นประจำ |
+| Backup Policy |  | ระบุ retention และ restore owner |
 
 ## 5. สร้างโครงสร้างโฟลเดอร์และ SMB Share
 
@@ -166,6 +187,16 @@ net use
 Test-Path "\\FS01\Users$\$env:USERNAME"
 ```
 
+## 8.1 แนวทางแก้ปัญหาที่พบบ่อย
+
+| อาการ | สาเหตุที่พบบ่อย | แนวทางตรวจสอบ |
+|---|---|---|
+| ผู้ใช้ไม่เห็น drive | GPO ไม่ apply หรืออยู่นอก scope | ตรวจ `gpresult /r`, OU link และ security filtering |
+| เห็น drive แต่เปิดไม่ได้ | NTFS permission หรือ share permission ไม่ถูกต้อง | ตรวจ `icacls`, share permission และชื่อโฟลเดอร์ให้ตรง `%USERNAME%` |
+| ผู้ใช้เห็นโฟลเดอร์ของคนอื่น | Access-Based Enumeration ไม่เปิด หรือ root permission กว้างเกินไป | ตรวจ `Get-SmbShare -Name Users$` และ ACL ที่ root |
+| Map drive ไปผิด path | ใช้ server/share/name ไม่ตรง | ตรวจค่า Location ใน Drive Maps |
+| Logon ช้า | GPO หรือ file server response ช้า | ตรวจ event log, network latency และ SMB session |
+
 ## 9. แนวปฏิบัติด้านความปลอดภัยและการดูแลต่อเนื่อง
 
 - ทบทวนสมาชิกกลุ่ม `FileShare-Admins` เป็นประจำ
@@ -175,6 +206,15 @@ Test-Path "\\FS01\Users$\$env:USERNAME"
 - กำหนด quota หรือ file screening หากต้องควบคุมพื้นที่หรือประเภทไฟล์
 - จัดทำทะเบียน share, owner, path, drive letter, กลุ่มผู้ใช้ และวันที่ทบทวนล่าสุด
 
+## 9.1 หลักฐานที่ควรบันทึก
+
+- Screenshot หรือ export ค่า SMB share
+- ผล `icacls` ของ root folder และ user folder ตัวอย่าง
+- Screenshot ค่า GPO Drive Maps
+- ผล `gpresult` ของผู้ใช้ทดสอบ
+- ผลทดสอบสร้าง/แก้ไข/ลบไฟล์ใน drive ส่วนตัว
+- Ticket หรือ change request ที่อนุมัติ
+
 ## 10. แผนย้อนกลับหากพบปัญหา
 
 1. ยกเลิกการ link GPO หรือปิดใช้งาน Drive Map item ชั่วคราว
@@ -182,3 +222,17 @@ Test-Path "\\FS01\Users$\$env:USERNAME"
 3. หยุดการใช้ share ชั่วคราวเฉพาะกรณีจำเป็นและสื่อสารผลกระทบกับผู้ใช้
 4. ตรวจสอบ Event Log, SMB session และผล `gpresult` ของผู้ใช้ที่ได้รับผลกระทบ
 5. บันทึกสาเหตุ วิธีแก้ไข และมาตรการป้องกันก่อนเปิดใช้งานอีกครั้ง
+
+## 11. Checklist สรุปผล
+
+| รายการตรวจสอบ | สถานะ | หมายเหตุ |
+|---|---|---|
+| สร้าง root folder แล้ว |  |  |
+| สร้าง SMB share และเปิด Access-Based Enumeration แล้ว |  |  |
+| กำหนด share permission แล้ว |  |  |
+| กำหนด NTFS permission ที่ root แล้ว |  |  |
+| สร้างโฟลเดอร์ผู้ใช้ทดสอบแล้ว |  |  |
+| ผู้ใช้ทดสอบ map drive ได้ |  |  |
+| ผู้ใช้ทดสอบเข้าถึงเฉพาะโฟลเดอร์ตนเองได้ |  |  |
+| Backup/restore ทดสอบแล้ว |  |  |
+| บันทึกหลักฐานและแจ้งผู้เกี่ยวข้องแล้ว |  |  |

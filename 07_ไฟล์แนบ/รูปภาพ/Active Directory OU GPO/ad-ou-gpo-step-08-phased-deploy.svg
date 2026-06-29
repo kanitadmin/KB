@@ -1,24 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
-  <rect width="1200" height="675" fill="#f7f9fb"/>
-  <rect x="55" y="45" width="1090" height="585" rx="18" fill="#ffffff" stroke="#c9d3df" stroke-width="2"/>
-  <text x="90" y="105" font-family="Segoe UI, Tahoma, sans-serif" font-size="34" font-weight="700" fill="#18324a">ขั้นตอนที่ 8: Deploy ทีละกลุ่มงาน</text>
-  <text x="90" y="150" font-family="Segoe UI, Tahoma, sans-serif" font-size="22" fill="#4f6478">เริ่มจากพื้นที่ความเสี่ยงต่ำ แล้วค่อยขยายไปยังพื้นที่คลินิกที่มีผลต่อการรักษา</text>
-  <rect x="120" y="250" width="210" height="120" rx="12" fill="#eef8ef" stroke="#3d8b52" stroke-width="2"/>
-  <text x="225" y="300" text-anchor="middle" font-family="Segoe UI, Tahoma, sans-serif" font-size="24" font-weight="700" fill="#18324a">Wave 1</text>
-  <text x="225" y="335" text-anchor="middle" font-family="Segoe UI, Tahoma, sans-serif" font-size="18" fill="#4f6478">Back Office</text>
-  <path d="M340 310 H445" stroke="#607d96" stroke-width="5" fill="none" marker-end="url(#arrow)"/>
-  <rect x="460" y="250" width="210" height="120" rx="12" fill="#e8f2ff" stroke="#3478c6" stroke-width="2"/>
-  <text x="565" y="300" text-anchor="middle" font-family="Segoe UI, Tahoma, sans-serif" font-size="24" font-weight="700" fill="#18324a">Wave 2</text>
-  <text x="565" y="335" text-anchor="middle" font-family="Segoe UI, Tahoma, sans-serif" font-size="18" fill="#4f6478">OPD / Support</text>
-  <path d="M680 310 H785" stroke="#607d96" stroke-width="5" fill="none" marker-end="url(#arrow)"/>
-  <rect x="800" y="250" width="250" height="120" rx="12" fill="#fff4df" stroke="#cf8a1e" stroke-width="2"/>
-  <text x="925" y="300" text-anchor="middle" font-family="Segoe UI, Tahoma, sans-serif" font-size="24" font-weight="700" fill="#18324a">Wave 3</text>
-  <text x="925" y="335" text-anchor="middle" font-family="Segoe UI, Tahoma, sans-serif" font-size="18" fill="#4f6478">ER / IPD / Critical</text>
-  <rect x="190" y="480" width="820" height="80" rx="10" fill="#f1f5f9" stroke="#d5dde6"/>
-  <text x="600" y="529" text-anchor="middle" font-family="Segoe UI, Tahoma, sans-serif" font-size="22" fill="#18324a">ผลลัพธ์: ลดความเสี่ยงจากการเปลี่ยนแปลงวงกว้างในครั้งเดียว</text>
   <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
-      <path d="M0,0 L0,6 L9,3 z" fill="#607d96"/>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#5E6B7A"/>
     </marker>
   </defs>
+  <g id="background">
+    <rect x="0" y="0" width="1200" height="675" fill="#F6F8FB"/>
+  </g>
+  <g id="containers">
+    <rect x="48" y="42" width="1104" height="585" rx="24" fill="#FFFFFF" stroke="#D6DEE8" stroke-width="1.5"/>
+    <rect x="48" y="42" width="1104" height="150" rx="24" fill="#FBFCFE"/>
+  </g>
+  <g id="nodes"><circle cx="1040" cy="116" r="52" fill="#E9F2FF" stroke="#2F6FB7" stroke-width="2"/><rect x="135" y="280" width="250" height="116" rx="14" fill="#EAF6F0" stroke="#2E7D5B" stroke-width="2"/><circle cx="163" cy="308" r="15" fill="#2E7D5B" opacity="0.95"/><rect x="475" y="280" width="250" height="116" rx="14" fill="#E9F2FF" stroke="#2F6FB7" stroke-width="2"/><circle cx="503" cy="308" r="15" fill="#2F6FB7" opacity="0.95"/><rect x="815" y="280" width="250" height="116" rx="14" fill="#FFF4D8" stroke="#B7791F" stroke-width="2"/><circle cx="843" cy="308" r="15" fill="#B7791F" opacity="0.95"/><rect x="150" y="492" width="900" height="72" rx="14" fill="#F3F6FA" stroke="#D6DEE8" stroke-width="1.5"/></g>
+  <g id="labels"><text x="90" y="91" font-family="Segoe UI, Leelawadee UI, Tahoma, Arial, sans-serif" font-size="18" font-weight="700" fill="#2F6FB7" letter-spacing="1">ACTIVE DIRECTORY / GPO ROADMAP</text><text x="90" y="136" font-family="Segoe UI, Leelawadee UI, Tahoma, Arial, sans-serif" font-size="34" font-weight="800" fill="#17263A">ขั้นตอนที่ 8: Deploy ทีละกลุ่มงาน</text><text x="90" y="176" font-family="Segoe UI, Leelawadee UI, Tahoma, Arial, sans-serif" font-size="20" fill="#5E6B7A">เริ่มจากพื้นที่ความเสี่ยงต่ำ แล้วค่อยขยายไปยังพื้นที่คลินิกที่สำคัญ</text><text x="1040" y="106" text-anchor="middle" font-family="Segoe UI, Leelawadee UI, Tahoma, Arial, sans-serif" font-size="12" font-weight="700" fill="#2F6FB7" letter-spacing="1">STEP</text><text x="1040" y="142" text-anchor="middle" font-family="Segoe UI, Leelawadee UI, Tahoma, Arial, sans-serif" font-size="34" font-weight="800" fill="#17263A">8</text><text x="163" y="314" text-anchor="middle" font-family="Segoe UI, Leelawadee UI, Tahoma, Arial, sans-serif" font-size="15" font-weight="800" fill="#FFFFFF">1</text><text x="260.0" y="332" text-anchor="middle" font-family="Segoe UI, Leelawadee UI, Tahoma, Arial, sans-serif" font-size="21" font-weight="800" fill="#17263A">Wave 1</text><text x="260.0" y="362" text-anchor="middle" font-family="Segoe UI, Leelawadee UI, Tahoma, Arial, sans-serif" font-size="16" fill="#5E6B7A">Back Office</text><text x="503" y="314" text-anchor="middle" font-family="Segoe UI, Leelawadee UI, Tahoma, Arial, sans-serif" font-size="15" font-weight="800" fill="#FFFFFF">2</text><text x="600.0" y="332" text-anchor="middle" font-family="Segoe UI, Leelawadee UI, Tahoma, Arial, sans-serif" font-size="21" font-weight="800" fill="#17263A">Wave 2</text><text x="600.0" y="362" text-anchor="middle" font-family="Segoe UI, Leelawadee UI, Tahoma, Arial, sans-serif" font-size="16" fill="#5E6B7A">OPD / Support</text><text x="843" y="314" text-anchor="middle" font-family="Segoe UI, Leelawadee UI, Tahoma, Arial, sans-serif" font-size="15" font-weight="800" fill="#FFFFFF">3</text><text x="940.0" y="332" text-anchor="middle" font-family="Segoe UI, Leelawadee UI, Tahoma, Arial, sans-serif" font-size="21" font-weight="800" fill="#17263A">Wave 3</text><text x="940.0" y="362" text-anchor="middle" font-family="Segoe UI, Leelawadee UI, Tahoma, Arial, sans-serif" font-size="16" fill="#5E6B7A">ER / IPD / Critical</text><text x="190" y="537" font-family="Segoe UI, Leelawadee UI, Tahoma, Arial, sans-serif" font-size="19" font-weight="700" fill="#17263A">ผลลัพธ์</text><text x="300" y="537" font-family="Segoe UI, Leelawadee UI, Tahoma, Arial, sans-serif" font-size="19" fill="#17263A">ลดความเสี่ยงจากการเปลี่ยนแปลงวงกว้างในครั้งเดียว</text></g>
+  <g id="connections"><line x1="393" y1="338.0" x2="467" y2="338.0" stroke="#5E6B7A" stroke-width="3" marker-end="url(#arrow)"/><line x1="733" y1="338.0" x2="807" y2="338.0" stroke="#5E6B7A" stroke-width="3" marker-end="url(#arrow)"/></g>
 </svg>

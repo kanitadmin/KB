@@ -7,10 +7,13 @@ tags:
   - upgrade
   - คู่มือ
 created: 2026-06-28
-updated: 2026-06-28
+updated: 2026-06-29
 ---
 
 # Wazuh - คู่มือการ Upgrade แบบ Standalone
+
+> [!summary] ใช้เมื่อไร
+> ใช้คู่มือนี้เมื่อต้อง Upgrade Wazuh แบบ Standalone หรือ All-in-one และต้องควบคุมความเสี่ยงของ SIEM, log ingestion, dashboard, agent visibility และหลักฐาน audit หลังดำเนินการ
 
 ## วัตถุประสงค์
 
@@ -60,6 +63,28 @@ updated: 2026-06-28
 - เมื่อ Upgrade ไปยัง Wazuh 4.12.0 หรือใหม่กว่า จะไม่สามารถ Rollback ไปยัง 4.11 หรือเก่ากว่าได้โดยตรง เนื่องจากข้อจำกัดของ Apache Lucene
 - ตั้งแต่ Wazuh 4.14.1 เป็นต้นไป Field ชื่อ `user` ใน JSON จะถูก Map เป็น `dstuser` อาจกระทบ Dashboard, Search, Script หรือ Integration ที่อ้างถึง `data.user`
 - ห้ามเปิดเผยรหัสผ่าน, Token หรือข้อมูล Sensitive ในรูปภาพหรือเอกสารประกอบ
+
+> [!warning] SIEM Visibility
+> ระหว่าง upgrade อาจเกิดช่วงที่ alert, dashboard หรือ log ingestion หยุดชั่วคราว ต้องแจ้งทีม Security/IT Operations และระบุช่องทาง monitoring สำรองก่อนเริ่มงาน
+
+## ความเสี่ยงและการควบคุม
+
+| ความเสี่ยง | ผลกระทบ | การควบคุม |
+| --- | --- | --- |
+| Indexer health ไม่พร้อมก่อน upgrade | Upgrade ล้มเหลวหรือข้อมูลค้นหาไม่ได้ | ตรวจ `_cluster/health` และแก้เหตุ `yellow/red` ก่อนเริ่ม |
+| Component version ไม่ตรงกัน | Dashboard หรือ agent data ผิดปกติ | Upgrade ตามลำดับและตรวจ version หลังทุก component |
+| Saved objects หรือ dashboard หาย | สูญเสียมุมมองตรวจสอบสำคัญ | Export saved objects ก่อน upgrade |
+| Repository เปิดค้าง | รอบ patch ถัดไปอาจ upgrade โดยไม่ตั้งใจ | ปิด repository หลังงานเสร็จ |
+| Rollback ข้าม major/ข้อจำกัด Lucene ทำไม่ได้ | ต้อง restore snapshot เท่านั้น | เตรียม snapshot ก่อน upgrade และกำหนด decision point |
+
+## จุดตัดสินใจก่อนดำเนินการต่อ
+
+| จุดตรวจ | เงื่อนไขผ่าน | หากไม่ผ่าน |
+| --- | --- | --- |
+| ก่อน stop service | Backup, saved objects และ indexer health พร้อม | หยุดงานและแก้ปัญหาก่อน |
+| หลัง upgrade indexer | Cluster health กลับมาใช้งานได้ | กู้ config หรือ restore snapshot ตามแผน |
+| หลัง upgrade manager/filebeat | Agent data และ index ใหม่เข้าได้ | ตรวจ config, certificate และ filebeat output |
+| ก่อนปิดงาน | Dashboard, alert และ agent visibility ปกติ | เปิด incident/change follow-up |
 
 ## ลำดับการ Upgrade
 
@@ -523,6 +548,25 @@ sed -i "s/^enabled=1/enabled=0/" /etc/yum.repos.d/wazuh.repo
 1. หากเป็นปัญหา Configuration ให้กู้คืนไฟล์จาก Backup แล้ว Restart Service ที่เกี่ยวข้อง
 2. หากเป็นปัญหาหลัง Upgrade Package และยังไม่กระทบข้อมูล Index ให้พิจารณา Restore จาก VM Snapshot หรือ Backup ระดับระบบ
 3. หาก Upgrade ไปยัง Wazuh 4.12.0 หรือใหม่กว่าแล้ว ห้ามคาดหวังว่าจะ Downgrade Indexer กลับไปยัง 4.11 หรือเก่ากว่าได้โดยตรง ต้องใช้ Snapshot หรือ Fresh Installation ตามแนวทางของ Wazuh
+
+## แนวทางแก้ปัญหาที่พบบ่อย
+
+| อาการ | สาเหตุที่พบบ่อย | แนวทางตรวจสอบ |
+| --- | --- | --- |
+| Dashboard เข้าไม่ได้ | Service ไม่ขึ้น, certificate หรือ config ไม่ตรง | ตรวจ `systemctl status wazuh-dashboard` และ log ของ dashboard |
+| Agent ไม่แสดงข้อมูลใหม่ | Wazuh Manager หรือ Filebeat มีปัญหา | ตรวจ `/var/ossec/bin/wazuh-control info`, `filebeat test output` |
+| Indexer health เป็น `red` | Shard หรือ security config มีปัญหา | ตรวจ `_cluster/health`, `_cat/indices` และ log indexer |
+| Login dashboard ไม่ได้ | Security config หรือ credential เปลี่ยน | ตรวจ saved config และ user/role ของ Wazuh Indexer |
+| Field ใน dashboard หายหลัง upgrade | Mapping หรือ field name เปลี่ยน | ตรวจ release notes และ saved object ที่อ้าง field เดิม |
+
+## หลักฐานที่ควรบันทึก
+
+- Version ของ Wazuh components ก่อนและหลัง upgrade
+- ผล `_cluster/health` ก่อนและหลัง upgrade
+- ผล `systemctl status` ของทุก service หลัง upgrade
+- ไฟล์ export saved objects หรือหลักฐานว่า export แล้ว
+- Screenshot dashboard แสดง agent และ alert หลัง upgrade
+- Ticket หรือ change request ที่อนุมัติ maintenance window
 
 ## แหล่งอ้างอิง
 

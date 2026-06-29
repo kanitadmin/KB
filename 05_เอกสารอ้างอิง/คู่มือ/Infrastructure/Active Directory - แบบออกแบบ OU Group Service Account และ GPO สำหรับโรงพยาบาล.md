@@ -8,10 +8,13 @@ tags:
   - infrastructure
   - คู่มือ
 created: 2026-06-28
-updated: 2026-06-28
+updated: 2026-06-29
 ---
 
 # Active Directory - แบบออกแบบ OU Group Service Account และ GPO สำหรับโรงพยาบาล
+
+> [!summary] ใช้เมื่อไร
+> ใช้คู่มือนี้เมื่อต้องออกแบบหรือปรับโครงสร้าง OU, Group, Service Account และ GPO ใน Active Directory ของโรงพยาบาล โดยเน้น least privilege, auditability, clinical continuity และการทดสอบก่อนใช้งานจริง
 
 ## วัตถุประสงค์
 
@@ -33,6 +36,31 @@ updated: 2026-06-28
 คู่มือนี้ครอบคลุมโครงสร้าง Active Directory สำหรับโรงพยาบาลที่มีผู้ใช้งานหลายบทบาท เช่น แพทย์ พยาบาล เภสัชกร ห้องปฏิบัติการ รังสีวิทยา งานการเงิน งานเวชระเบียน งานบริหาร และฝ่าย IT
 
 คู่มือนี้ไม่ครอบคลุมการออกแบบ Entra ID, Hybrid Join, Conditional Access หรือระบบ IAM ภายนอก
+
+## ข้อกำหนดก่อนออกแบบหรือเปลี่ยนแปลง
+
+- มีรายชื่อระบบงานสำคัญ เจ้าของระบบ และกลุ่มผู้ใช้หลักของโรงพยาบาล
+- มี export หรือ backup โครงสร้าง AD/GPO ปัจจุบันก่อนเปลี่ยนแปลง
+- มีรายการข้อยกเว้นของ medical devices, vendor systems และ legacy applications
+- มีผู้อนุมัติ change, maintenance window และแผน rollback หากมีการย้าย object หรือ link GPO ใหม่
+- มี OU ทดสอบหรือ pilot group สำหรับทดสอบ GPO ก่อน deploy
+
+> [!warning] ระบบโรงพยาบาล
+> GPO ที่กระทบเครื่องคลินิก, medical devices, HIS/EMR, LIS, RIS/PACS หรือ shared workstation ต้องทดสอบกับผู้ใช้งานจริงกลุ่มเล็กก่อนเสมอ เพราะผลกระทบอาจเกี่ยวข้องกับ workflow การรักษาและความต่อเนื่องของบริการ
+
+## ข้อมูลที่ต้องเก็บก่อนเริ่ม
+
+| รายการ | รายละเอียด |
+| --- | --- |
+| Domain / Forest |  |
+| จำนวนผู้ใช้โดยประมาณ |  |
+| จำนวน workstation / laptop |  |
+| จำนวน server |  |
+| ระบบสำคัญที่ผูกกับ AD | HIS / LIS / RIS / PACS / ERP / อื่น ๆ |
+| ระบบบริหาร patch / endpoint security |  |
+| SIEM หรือ log server |  |
+| ผู้อนุมัติการเปลี่ยนแปลง |  |
+| วันที่ทบทวนครั้งถัดไป |  |
 
 ## Naming Convention
 
@@ -346,39 +374,82 @@ DL_APP_HIS_DOCTOR ได้รับสิทธิ์ในระบบ HIS
 
 1. สำรองและ Export โครงสร้าง AD/GPO ปัจจุบันก่อนเปลี่ยนแปลง
 
-![[07_ไฟล์แนบ/รูปภาพ/Active Directory OU GPO/ad-ou-gpo-step-01-export-current-state.svg]]
+![[07_ไฟล์แนบ/รูปภาพ/Active Directory OU GPO/ad-ou-gpo-step-01-export-current-state.png]]
 
 2. สร้าง OU หลักและ OU ย่อยในช่วง Maintenance Window
 
-![[07_ไฟล์แนบ/รูปภาพ/Active Directory OU GPO/ad-ou-gpo-step-02-create-ou.svg]]
+![[07_ไฟล์แนบ/รูปภาพ/Active Directory OU GPO/ad-ou-gpo-step-02-create-ou.png]]
 
 3. สร้างกลุ่มตาม Naming Convention
 
-![[07_ไฟล์แนบ/รูปภาพ/Active Directory OU GPO/ad-ou-gpo-step-03-create-groups.svg]]
+![[07_ไฟล์แนบ/รูปภาพ/Active Directory OU GPO/ad-ou-gpo-step-03-create-groups.png]]
 
 4. กำหนด Owner ของทุกกลุ่มและทุก Service Account
 
-![[07_ไฟล์แนบ/รูปภาพ/Active Directory OU GPO/ad-ou-gpo-step-04-assign-owners.svg]]
+![[07_ไฟล์แนบ/รูปภาพ/Active Directory OU GPO/ad-ou-gpo-step-04-assign-owners.png]]
 
 5. สร้าง GPO ในสภาพแวดล้อมทดสอบหรือ OU `08_Testing`
 
-![[07_ไฟล์แนบ/รูปภาพ/Active Directory OU GPO/ad-ou-gpo-step-05-create-gpo-testing.svg]]
+![[07_ไฟล์แนบ/รูปภาพ/Active Directory OU GPO/ad-ou-gpo-step-05-create-gpo-testing.png]]
 
 6. ทดสอบกับ Pilot User และ Pilot Computer
 
-![[07_ไฟล์แนบ/รูปภาพ/Active Directory OU GPO/ad-ou-gpo-step-06-pilot.svg]]
+![[07_ไฟล์แนบ/รูปภาพ/Active Directory OU GPO/ad-ou-gpo-step-06-pilot.png]]
 
 7. ตรวจสอบผลด้วย `gpresult`, Event Log และการใช้งาน Application สำคัญ
 
-![[07_ไฟล์แนบ/รูปภาพ/Active Directory OU GPO/ad-ou-gpo-step-07-validate.svg]]
+![[07_ไฟล์แนบ/รูปภาพ/Active Directory OU GPO/ad-ou-gpo-step-07-validate.png]]
 
 8. Deploy ทีละกลุ่มงาน โดยเริ่มจาก Back Office ก่อนพื้นที่คลินิก
 
-![[07_ไฟล์แนบ/รูปภาพ/Active Directory OU GPO/ad-ou-gpo-step-08-phased-deploy.svg]]
+![[07_ไฟล์แนบ/รูปภาพ/Active Directory OU GPO/ad-ou-gpo-step-08-phased-deploy.png]]
 
 9. บันทึกผลและปรับปรุง Exception List
 
-![[07_ไฟล์แนบ/รูปภาพ/Active Directory OU GPO/ad-ou-gpo-step-09-record-exceptions.svg]]
+![[07_ไฟล์แนบ/รูปภาพ/Active Directory OU GPO/ad-ou-gpo-step-09-record-exceptions.png]]
+
+## คำสั่งตรวจสอบที่แนะนำ
+
+ตรวจสอบ OU และ object สำคัญ:
+
+```powershell
+Get-ADOrganizationalUnit -Filter * | Select-Object Name, DistinguishedName
+Get-ADGroup -Filter 'Name -like "GG_*" -or Name -like "DL_*"' | Select-Object Name, GroupScope, Description
+Get-ADServiceAccount -Filter * | Select-Object Name, Enabled, DistinguishedName
+```
+
+ตรวจสอบ GPO และ link:
+
+```powershell
+Get-GPO -All | Select-Object DisplayName, Owner, CreationTime, ModificationTime
+Get-GPInheritance -Target "OU=01_Users,DC=hospital,DC=local"
+```
+
+ตรวจสอบผลกับเครื่องหรือผู้ใช้ทดสอบ:
+
+```cmd
+gpupdate /force
+gpresult /h C:\Temp\gpresult.html
+```
+
+## แนวทางแก้ปัญหาที่พบบ่อย
+
+| อาการ | สาเหตุที่พบบ่อย | แนวทางตรวจสอบ |
+| --- | --- | --- |
+| GPO ไม่ apply | Link OU ไม่ถูก, security filtering ไม่ตรง, WMI filter ไม่ผ่าน | ตรวจ `gpresult`, GPO scope และ event log |
+| ผู้ใช้ได้สิทธิ์เกินจำเป็น | ซ้อนกลุ่มผิด หรือใช้ group ร่วมกันหลายระบบ | ตรวจ group membership และ mapping แบบ AGDLP |
+| เครื่องคลินิกมีปัญหาหลัง GPO | Policy เข้มเกินไปหรือกระทบ legacy application | ย้ายเข้า OU testing/exception และทดสอบกับ vendor |
+| Service Account login ได้แบบ interactive | ยังไม่ได้ apply deny logon policy | ตรวจ GPO `GPO-SVC-ServiceAccount-DenyLogon` และ OU ของ service account |
+| Audit ตรวจย้อนกลับยาก | Group/GPO ไม่มี owner หรือ description | เติม owner, purpose, ticket และ review date |
+
+## หลักฐานที่ควรบันทึก
+
+- Export รายการ OU, Group, Service Account และ GPO ก่อน/หลังปรับ
+- Report จาก `gpresult` ของ pilot user และ pilot computer
+- รายการ exception ของ medical devices และ vendor systems
+- Ticket หรือ change request ที่อนุมัติ
+- Screenshot หรือ export GPO setting ที่สำคัญ
+- ผลทดสอบ application สำคัญหลัง deploy
 
 ## Checklist สำหรับตรวจรับ
 

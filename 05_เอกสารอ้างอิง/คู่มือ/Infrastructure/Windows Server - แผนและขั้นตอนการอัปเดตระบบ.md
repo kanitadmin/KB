@@ -7,10 +7,13 @@ tags:
   - infrastructure
   - คู่มือ
 created: 2026-06-28
-updated: 2026-06-28
+updated: 2026-06-29
 ---
 
 # Windows Server - แผนและขั้นตอนการอัปเดตระบบ
+
+> [!summary] ใช้เมื่อไร
+> ใช้คู่มือนี้เมื่อต้องวางแผนและติดตั้ง Windows Update บน Windows Server โดยต้องควบคุม downtime, restart, rollback, evidence และการตรวจสอบ service หลังดำเนินการ
 
 ## วัตถุประสงค์
 
@@ -21,6 +24,9 @@ updated: 2026-06-28
 คู่มือนี้ครอบคลุมการติดตั้ง Windows Update, Security Update, Cumulative Update และ Update ที่ได้รับอนุมัติสำหรับ Windows Server
 
 คู่มือนี้ไม่ครอบคลุมการอัปเกรดข้ามเวอร์ชันระบบปฏิบัติการ เช่น Windows Server 2019 เป็น Windows Server 2022 หรือการย้ายระบบไปยังเครื่องใหม่
+
+> [!warning] Production Server
+> หากเป็นระบบ production ต้องยืนยัน backup หรือ snapshot, maintenance window, เจ้าของระบบงาน, ช่องทาง remote/console สำรอง และเกณฑ์ rollback ก่อนเริ่มติดตั้ง update
 
 ## ข้อมูลระบบ
 
@@ -52,6 +58,16 @@ updated: 2026-06-28
 | 6 | Restart Server หากจำเป็น |  |  | Server กลับมาทำงานปกติ |
 | 7 | ตรวจสอบบริการหลังอัปเดต |  |  | Service และ Application ใช้งานได้ |
 | 8 | บันทึกผลและปิดงาน |  |  | มีหลักฐานประกอบครบถ้วน |
+
+## ความเสี่ยงและการควบคุม
+
+| ความเสี่ยง | ผลกระทบ | การควบคุม |
+| --- | --- | --- |
+| Update ต้อง restart | ระบบหยุดให้บริการชั่วคราว | ทำใน maintenance window และแจ้งผู้เกี่ยวข้อง |
+| Cumulative Update ทำให้ application มีปัญหา | Service หรือ application ทำงานผิดปกติ | ทดสอบหลังอัปเดตร่วมกับเจ้าของระบบ |
+| พื้นที่ Drive `C:` ไม่พอ | Update ล้มเหลวหรือค้าง | ตรวจพื้นที่และ cleanup ก่อนเริ่ม |
+| Patch จาก WSUS ยังไม่อนุมัติครบ | Server ไม่ได้รับ update ที่ต้องการ | ตรวจกลุ่ม WSUS และสถานะ approval ก่อนงาน |
+| ถอน update ไม่ได้ | Rollback ทำได้จำกัด | เตรียม VM snapshot หรือ backup ระดับระบบ |
 
 ## ข้อกำหนดก่อนดำเนินการ
 
@@ -295,6 +311,25 @@ Restart-Computer
 ```
 
 หมายเหตุ: Update บางประเภทอาจไม่สามารถถอนการติดตั้งได้ หรืออาจต้องใช้วิธีกู้คืนระบบจาก Backup หรือ Snapshot แทน
+
+## แนวทางแก้ปัญหาที่พบบ่อย
+
+| อาการ | สาเหตุที่พบบ่อย | แนวทางตรวจสอบ |
+| --- | --- | --- |
+| Windows Update ดาวน์โหลดไม่ได้ | WSUS, proxy, DNS หรือ firewall มีปัญหา | ตรวจ Windows Update setting, WSUS group และ event log |
+| ติดตั้ง update ค้าง | พื้นที่ไม่พอหรือ Windows Update component มีปัญหา | ตรวจพื้นที่ Drive `C:`, `WindowsUpdate.log` และ event log |
+| Restart แล้ว service ไม่ขึ้น | Dependency หรือ credential ของ service มีปัญหา | ตรวจ `Get-Service`, Event Viewer และ service account |
+| Remote เข้าไม่ได้หลัง reboot | Network profile, firewall หรือ RDP service มีปัญหา | ใช้ console ตรวจ network, firewall และ Remote Desktop Services |
+| ถอน KB ไม่ได้ | Update ไม่รองรับ uninstall หรือเป็น servicing stack | ตรวจรายการ update และพิจารณากู้คืนจาก snapshot/backup |
+
+## หลักฐานที่ควรบันทึก
+
+- Version และ build ก่อนและหลังอัปเดต
+- รายการ KB ที่ติดตั้งจาก `Get-HotFix`
+- Screenshot หรือ export จาก WSUS/patch management console
+- Event log สำคัญหลัง restart
+- ผลตรวจ service และ application จากเจ้าของระบบ
+- Ticket, change request หรือบันทึกอนุมัติ maintenance window
 
 ## แหล่งอ้างอิง
 

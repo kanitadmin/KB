@@ -7,10 +7,13 @@ tags:
   - upgrade
   - คู่มือ
 created: 2026-06-28
-updated: 2026-06-28
+updated: 2026-06-29
 ---
 
 # MinIO - คู่มือการ Upgrade แบบ Standalone Native
+
+> [!summary] ใช้เมื่อไร
+> ใช้คู่มือนี้เมื่อต้อง Upgrade MinIO แบบ Standalone Native บน Linux และต้องควบคุม downtime, object availability, configuration backup, binary rollback และหลักฐานหลังดำเนินการ
 
 ## วัตถุประสงค์
 
@@ -59,6 +62,28 @@ updated: 2026-06-28
 - ไม่ควรเปิดเผย `MINIO_ROOT_USER`, `MINIO_ROOT_PASSWORD`, Access Key หรือ Secret Key ในรูปภาพหรือเอกสารประกอบ
 - หลีกเลี่ยงการ Downgrade หลังเปิดใช้งาน Version ใหม่แล้ว หากต้อง Rollback ควรใช้ VM Snapshot หรือ Storage Snapshot ที่ทำไว้ก่อน Upgrade
 - หากมี Application เชื่อมต่อ MinIO อยู่ ให้แจ้งผู้เกี่ยวข้องและหยุดการเขียนข้อมูลก่อนเริ่มดำเนินการ
+
+> [!warning] Standalone Downtime
+> MinIO แบบ Standalone ไม่มี node อื่นมารับงานแทน ระหว่าง stop/start service application ที่อ่านหรือเขียน object จะได้รับผลกระทบ ต้องแจ้งเจ้าของระบบและหยุดงานเขียนข้อมูลก่อนเริ่ม
+
+## ความเสี่ยงและการควบคุม
+
+| ความเสี่ยง | ผลกระทบ | การควบคุม |
+| --- | --- | --- |
+| Binary ใหม่ไม่ compatible กับ configuration เดิม | Service start ไม่ขึ้น | สำรอง binary/config และทดสอบ version ก่อนแทนที่ |
+| มี application เขียนข้อมูลระหว่าง upgrade | ข้อมูลไม่ครบหรือเกิด error ฝั่ง application | แจ้ง downtime และหยุดงานเขียนก่อน stop service |
+| Secret หลุดในหลักฐาน | กระทบความปลอดภัยของ object storage | mask ค่า password/access key ก่อนบันทึกหลักฐาน |
+| Snapshot ไม่พร้อม | Rollback ไม่สมบูรณ์ | ตรวจ backup/snapshot ก่อนเริ่ม |
+| Upgrade `mc` แล้ว alias ใช้งานไม่ได้ | ตรวจสอบระบบหลัง upgrade ไม่ได้ | สำรอง `mc` เดิมและตรวจ `mc alias list` |
+
+## จุดตัดสินใจก่อนดำเนินการต่อ
+
+| จุดตรวจ | เงื่อนไขผ่าน | หากไม่ผ่าน |
+| --- | --- | --- |
+| ก่อน stop service | Backup, snapshot และ owner application พร้อม | เลื่อนงานจนกว่าจะพร้อม |
+| หลังแทนที่ binary | `minio --version` แสดงรุ่นที่ต้องการ | คืน binary เดิมจาก backup |
+| หลัง start service | `systemctl status minio` ปกติและ log ไม่มี error สำคัญ | หยุด service และ rollback ตามแผน |
+| ก่อนปิดงาน | Upload/download และ application test ผ่าน | เปิด ticket follow-up และยังไม่ปิด maintenance |
 
 ## ลำดับการ Upgrade
 
@@ -385,6 +410,25 @@ chmod 0755 "$MINIO_BIN"
 systemctl start minio
 systemctl status minio --no-pager
 ```
+
+## แนวทางแก้ปัญหาที่พบบ่อย
+
+| อาการ | สาเหตุที่พบบ่อย | แนวทางตรวจสอบ |
+| --- | --- | --- |
+| Service start ไม่ขึ้น | Environment file, path หรือ permission ของ binary ไม่ถูกต้อง | ตรวจ `systemctl cat minio`, `journalctl -u minio` และ permission ของ binary |
+| `mc admin info` ไม่ได้ | Alias, credential หรือ certificate มีปัญหา | ตรวจ `mc alias list`, certificate และ endpoint |
+| Console เข้าไม่ได้ | Service, firewall หรือ reverse proxy มีปัญหา | ตรวจ port, firewall, reverse proxy และ MinIO log |
+| Upload/download test ล้มเหลว | Bucket permission หรือ policy ไม่ถูกต้อง | ตรวจ bucket policy, user policy และ application credential |
+| หลัง upgrade application เขียนไม่ได้ | SDK/client เก่าหรือ endpoint policy เปลี่ยน | ตรวจ application log และทดสอบด้วย `mc` จาก host เดียวกัน |
+
+## หลักฐานที่ควรบันทึก
+
+- Version ของ MinIO และ `mc` ก่อน/หลัง upgrade
+- ผล `systemctl status minio` หลัง start service
+- ผล `mc admin info local`
+- ผลทดสอบ upload/download object
+- หลักฐาน backup หรือ snapshot ก่อนดำเนินการ
+- Ticket หรือ change request ที่อนุมัติ maintenance window
 
 ## แหล่งอ้างอิง
 
