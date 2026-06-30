@@ -61,12 +61,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "05_เอกสารอ้างอิง/คู่มือ/Infrastructure/Windows Server - คู่มือการจัดทำ Personal Share Drive ด้วย SMB และ GPO.md",
+                "file": "05_เอกสารอ้างอิง/คู่มือ/Database/PostgreSQL - คู่มือการสร้าง Database และ User.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Windows Server - คู่มือการจัดทำ Personal Share Drive ด้วย SMB และ GPO"
+              "title": "PostgreSQL - คู่มือการสร้าง Database และ User"
             }
           }
         ],
@@ -127,7 +127,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 856.5
+    "width": 268.5
   },
   "right": {
     "id": "03c5b58a918fe4dd",
@@ -235,8 +235,8 @@
   "active": "928d5712b80383c0",
   "lastOpenFiles": [
     "codex-skills-inventory.md",
-    "05_เอกสารอ้างอิง/คู่มือ/Infrastructure/Ubuntu Server - แผนและขั้นตอนการอัปเดตระบบ.md",
     "05_เอกสารอ้างอิง/คู่มือ/Infrastructure/Windows Server - คู่มือการจัดทำ Personal Share Drive ด้วย SMB และ GPO.md",
+    "05_เอกสารอ้างอิง/คู่มือ/Infrastructure/Ubuntu Server - แผนและขั้นตอนการอัปเดตระบบ.md",
     "05_เอกสารอ้างอิง/คู่มือ/Infrastructure/Windows Server - แผนและขั้นตอนการอัปเดตระบบ.md",
     "07_ไฟล์แนบ/รูปภาพ/Active Directory OU GPO/ad-ou-gpo-step-05-create-gpo-testing.svg",
     "07_ไฟล์แนบ/รูปภาพ/Active Directory OU GPO/ad-ou-gpo-step-04-assign-owners.svg",
